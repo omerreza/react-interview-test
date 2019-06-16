@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+import { Typeahead } from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import "./App.css";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface AppState {
+  readonly companies: Company[];
+}
+
+interface Company {
+  readonly name: string;
+  readonly domain: string;
+  readonly logo: string;
+}
+
+export class App extends React.Component<{}, AppState> {
+  constructor() {
+    super({});
+
+    this.state = {
+      companies: [
+        {
+          name: "Facebook",
+          domain: "facebook.com",
+          logo: "https://logo.clearbit.com/facebook.com"
+        },
+        {
+          name: "FANDOM",
+          domain: "fandom.com",
+          logo: "https://logo.clearbit.com/fandom.com"
+        }
+      ]
+    };
+  }
+
+  searchCompanies = (searchText: string) => {
+    if (!searchText || searchText === "") {
+      return;
+    }
+
+    console.log(searchText);
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <Typeahead
+          options={this.state.companies}
+          labelKey={"name"}
+          onInputChange={this.searchCompanies}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
